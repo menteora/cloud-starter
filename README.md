@@ -77,3 +77,42 @@ mv ~/setup-private-repo.sh ~/.local/bin/setup-private-repo
 | `git`     | `sudo apt install git` |
 | `openssh-client` | `sudo apt install openssh-client` |
 | `curl`    | `sudo apt install curl` |
+
+---
+
+## Login SSH senza password verso un server remoto
+
+Lo script `setup-ssh-passwordless.sh` configura in modo guidato il login SSH a un server remoto (VPS, cloud instance, ecc.) senza dover inserire la password ad ogni accesso.
+
+### Cosa fa lo script
+
+1. Verifica che `ssh`, `ssh-keygen` e `ssh-copy-id` siano installati
+2. Chiede i dati del server remoto (utente, host, porta)
+3. Genera una chiave SSH `ed25519` (o riutilizza quella esistente)
+4. Copia la chiave pubblica sul server con `ssh-copy-id` (richiede la password del server solo questa volta)
+5. Avvia `ssh-agent` e aggiunge la chiave, con snippet di persistenza in `~/.bashrc`
+6. (Opzionale) crea un alias rapido, es. `myserver`, per connettersi in un comando solo
+7. (Opzionale) aggiunge una voce a `~/.ssh/config` per semplificare ulteriormente la connessione
+8. Testa il login passwordless per confermare il successo
+
+---
+
+### Download e primo avvio
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/menteora/cloud-starter/main/setup-ssh-passwordless.sh \
+     -o ~/setup-ssh-passwordless.sh
+
+chmod +x ~/setup-ssh-passwordless.sh
+
+~/setup-ssh-passwordless.sh
+```
+
+---
+
+### Prerequisiti
+
+| Strumento | Installazione |
+|-----------|--------------|
+| `openssh-client` | `sudo apt install openssh-client` |
+| `curl`    | `sudo apt install curl` |
